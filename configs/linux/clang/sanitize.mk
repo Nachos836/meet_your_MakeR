@@ -27,11 +27,11 @@ pointer-overflow,
 builtin
 endef
 
-CFLAGS	+=	-g3 \
-			-fno-omit-frame-pointer
+PROJ_CFLAGS	+=	-g3 \
+				-fno-omit-frame-pointer
 
 ifeq ($(ASAN),)
-	CFLAGS	+=	-fsanitize="$(subst $(newline),,${sanitize_flags_CLANG})"
+	PROJ_CFLAGS	+=	-fsanitize="$(subst $(newline),,${sanitize_flags_CLANG})"
 else ifeq ($(ASAN),LEAKS)
-	CFLAGS	+=	-fsanitize="memory"
+	PROJ_CFLAGS	+=	-fsanitize="memory"
 endif

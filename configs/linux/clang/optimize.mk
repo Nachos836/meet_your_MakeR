@@ -1,4 +1,4 @@
-CFLAGS	+=	-march=native \
-			-mtune=native \
-			-Ofast
+PROJ_CFLAGS	+=	-march=native \
+				-mtune=native \
+				-Ofast
 			

@@ -1,5 +1,5 @@
-CFLAGS	+=		-g3 \
-				--coverage \
-				-grecord-gcc-switches \
-				-fno-omit-frame-pointer \
-				-fno-merge-debug-strings
+PROJ_CFLAGS	+=		-g3 \
+					--coverage \
+					-grecord-gcc-switches \
+					-fno-omit-frame-pointer \
+					-fno-merge-debug-strings

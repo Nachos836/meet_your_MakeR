@@ -36,7 +36,7 @@ pointer-overflow,
 builtin
 endef
 
-# CFLAGS	+=	-g3 \
+# PROJ_CFLAGS	+=	-g3 \
 # 			-fno-omit-frame-pointer \
 # 			-fno-merge-debug-strings \
 # 			-fsanitize="$(subst $(newline),,${sanitize_flags})" \
@@ -44,12 +44,12 @@ endef
 # 			-fsanitize-undefined-trap-on-error \
 # 			-fsanitize-coverage="trace-cmp" \
 
-CFLAGS	+=	-g3 \
+PROJ_CFLAGS	+=	-g3 \
 			-fno-omit-frame-pointer \
 			-fno-merge-debug-strings
 
 ifeq ($(ASAN),)
-	CFLAGS	+=	-fsanitize="$(subst $(newline),,${sanitize_flags})"
+	PROJ_CFLAGS	+=	-fsanitize="$(subst $(newline),,${sanitize_flags})"
 else ifeq ($(ASAN),LEAKS)
-	CFLAGS	+=	-fsanitize="$(subst $(newline),,${address_sanitize_flags})"
+	PROJ_CFLAGS	+=	-fsanitize="$(subst $(newline),,${address_sanitize_flags})"
 endif
