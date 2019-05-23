@@ -62,3 +62,11 @@ re_libs:
 
 fclean_libs:
 	@$(FCLEAN_LIBS)
+
+re_all:
+	@$(MAKE) -j re_libs --no-print-directory
+	@$(MAKE) re --no-print-directory
+
+fclean_all:
+	@$(MAKE) -j fclean_libs --no-print-directory
+	@$(MAKE) fclean
