@@ -1,2 +1,2 @@
-CFLAGS	+=	-g \
-			-pg
+PROJ_CFLAGS	+=	-g \
+				-pg
