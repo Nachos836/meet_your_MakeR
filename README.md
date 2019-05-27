@@ -46,7 +46,7 @@ ___
   * simple make current target
 * `make PROJ_CC=clang re`
   * rebuild current target with clang compiler
-* `make ASAN=LEAKS CC=gcc FLAG=WARNINGS,SANITIZE re`
+* `make ASAN=LEAKS PROJ_CC=gcc FLAG=WARNINGS,SANITIZE re`
   * rebuild current target with gcc compiler, add all warnings flags and sanitizer flags with memory leaks detection
 * `make BUILD=DEBUG FLAG=DEBUG re`
   * rebuild current target with "debug" sources added and then start lldb instance for current target
