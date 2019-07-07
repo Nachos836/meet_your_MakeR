@@ -7,21 +7,23 @@ INCLUDE_DIR		?=
 LIBS_NAMES		?=
 LIBRARIES_DIR	?=
 
-ifndef (space)
-	empty	:=
-	space	:=	$(empty) $(empty)
-endif
-
 COMPILE_OBJ_RULE	?=	$(PROJ_CFLAGS) \
-					$(addprefix -I,"$(INCLUDE_DIR)")
+						$(foreach inc,\
+						$(INCLUDES),\
+						$(addprefix -I,"$(inc)"))
+
+
 ifneq ($(LIBS_NAMES),$(error))
 	COMPILE_OBJ_RULE += $(foreach lib,\
-							$(LIBS_NAMES),\
-							$(addprefix -I,"$(LIBRARIES_DIR)lib$(lib)/includes/"))
+						$(LIBS_NAMES),\
+						$(addprefix -I,"$(LIBRARIES_DIR)lib$(lib)/includes/"))
 endif
 
 COMPILE_APP_RULE	?=	$(PROJ_CFLAGS) \
-						$(addprefix -I,"$(INCLUDE_DIR)")
+						$(foreach inc,\
+						$(INCLUDES),\
+						$(addprefix -I,"$(inc)"))
+
 ifneq ($(LIBS_NAMES),$(error))
 	COMPILE_APP_RULE	+=	$(foreach lib,\
 							$(LIBS_NAMES),\

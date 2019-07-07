@@ -1,17 +1,34 @@
-include $(CURDIR)/configs/common_variables.mk
 include $(CURDIR)/configs/detect_os.mk
+
+ifeq ($(OS_DETECT),$(OS_LINUX))
+	MKDIR		:= mkdir -p
+	RMDIR		:= rm -rf
+	RMFILE		:= rm -f
+else ifeq ($(OS_DETECT),$(OS_OSX))
+	MKDIR		:= mkdir -p
+	RMDIR		:= rm -rf
+	RMFILE		:= rm -f
+else ifeq ($(OS_DETECT),$(OS_WINDOWS))
+	MKDIR		:= mkdir
+	RMDIR		:= rmdir /s /q
+	RMFILE		:= del
+else
+	MKDIR		:= $(error)
+	RMDIR		:= $(error)
+	RMFILE		:= $(error)
+endif
 
 PROJ_CFLAGS	:=
 PROJ_CC		:=	gcc
 
 OS_DETECT	?=	$(error)
 NAME		?=	$(notdir $(CURDIR))
-BUILD		?=	VANILA
-OBJECTS_DIR	:=	$(CURDIR)/objects/
+BUILD		?=	VANILLA
+OBJECTS_DIR	:=	$(CURDIR)/objects
 
-INCLUDE_DIR	?=	$(dir $(wildcard $(CURDIR)/includes/))
-ifeq ($(INCLUDE_DIR),)
-	INCLUDE_DIR	:= $(CURDIR)
+INCLUDES_DIR	?=	$(dir $(wildcard $(CURDIR)/includes/))
+ifeq ($(INCLUDES_DIR),)
+	INCLUDES_DIR	:= $(CURDIR)
 endif
 
 ifneq (,$(findstring lib,$(NAME)))
@@ -24,17 +41,28 @@ ifeq ($(SOURCES_DIR),)
 	SOURCES_DIR	:= $(CURDIR)
 endif
 
-ifeq ($(BUILD),VANILLA)
-	SOURCES_VERSION_DIR	?=
-else ifeq ($(BUILD),DEBUG)
-	CFLAGS	+=	-D BUILD__DEBUG
-	SOURCES_VERSION_DIR	:= $(dir $(wildcard $(SOURCES_DIR)debug/))
-else ifeq ($(BUILD),RELEASE)
-	SOURCES_VERSION_DIR	:= $(dir $(wildcard $(SOURCES_DIR)release/))
-endif
+INCLUDES	:= $(call unique_str,$(dir $(call rwildcard,$(INCLUDES_DIR),*.h)))
+SOURCES		:= $(call rwildcard,$(SOURCES_DIR),*.c)
+OBJECTS		:= $(patsubst $(SOURCES_DIR)%.c,$(OBJECTS_DIR)//%.o,$(SOURCES))
 
-SOURCES			:=	$(notdir $(wildcard $(SOURCES_DIR)*c))
-SOURCES_VERSION	:=	$(notdir $(wildcard $(SOURCES_VERSION_DIR)*c))
+# $(info INCLUDES: $(INCLUDES))
+# $(info SOURCES: $(SOURCES))
+# $(info OBJECTS: $(OBJECTS))
 
-OBJ		:=	$(addprefix $(OBJECTS_DIR),$(SOURCES:.c=.o))
-OBJ		+=	$(addprefix $(OBJECTS_DIR),$(SOURCES_VERSION:.c=.o))
+# ifeq ($(BUILD),VANILLA)
+# 	SOURCES_VERSION_DIR	?=
+# else ifeq ($(BUILD),DEBUG)
+# 	CFLAGS	+=	-D BUILD__DEBUG
+# 	SOURCES_VERSION_DIR	:= $(dir $(wildcard $(SOURCES_DIR)debug/))
+# else ifeq ($(BUILD),RELEASE)
+# 	SOURCES_VERSION_DIR	:= $(dir $(wildcard $(SOURCES_DIR)release/))
+# endif
+
+
+
+
+# SOURCES			:=	$(notdir $(wildcard $(SOURCES_DIR)*c))
+# SOURCES_VERSION	:=	$(notdir $(wildcard $(SOURCES_VERSION_DIR)*c))
+
+# OBJ		:=	$(addprefix $(OBJECTS_DIR),$(SOURCES:.c=.o))
+# OBJ		+=	$(addprefix $(OBJECTS_DIR),$(SOURCES_VERSION:.c=.o))

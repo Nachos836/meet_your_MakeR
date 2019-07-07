@@ -1,3 +1,5 @@
+include $(CURDIR)/configs/common_variables.mk
+
 include $(CURDIR)/configs/functions.mk
 include $(CURDIR)/configs/preparation.mk
 include $(CURDIR)/configs/libraries_processing.mk
@@ -7,66 +9,85 @@ include $(CURDIR)/configs/create_compile_rules.mk
 
 include $(CURDIR)/configs/MODIFIERS.mk
 
+.PHONY: all
 all:
 ifdef CLEAR
 	@$(CLEAR)
 endif
-	@mkdir -p $(OBJECTS_DIR)
 ifneq ($(LIBS_NAMES),$(error))
-	$(MAKE_LIBS)
+	@$(MAKE_LIBS)
 endif
 	@$(MAKE) $(NAME) --no-print-directory
 
-$(OBJECTS_DIR)%.o:$(SOURCES_DIR)%.c
-	@$(info [COMPILING] $(notdir $<))
-	@$(PROJ_CC) $(COMPILE_OBJ_RULE) -o $@ -c $<
+.PRECIOUS: $(OBJECTS_DIR)/ $(OBJECTS_DIR)%/
 
-$(OBJECTS_DIR)%.o:$(SOURCES_VERSION_DIR)%.c
+$(OBJECTS_DIR)/:
+	@$(MKDIR) $@
+
+$(OBJECTS_DIR)%/:
+	@$(MKDIR) $@
+
+.SECONDEXPANSION:
+
+$(OBJECTS_DIR)/%.o: $(SOURCES_DIR)/%.c | $$(@D)/
 	@$(info [COMPILING] $(notdir $<))
-	@$(PROJ_CC) $(COMPILE_OBJ_RULE) -o $@ -c $<
+	@$(PROJ_CC) $(COMPILE_OBJ_RULE) -c $< -o $@
+
+# $(OBJECTS_DIR)%.o:$(SOURCES_VERSION_DIR)%.c
+# 	@$(info [COMPILING] $(notdir $<))
+# 	@$(PROJ_CC) $(COMPILE_OBJ_RULE) -o $@ -c $<
+
+
 
 $(NAME):
 	@$(info [CREATING]	$@	[$(BUILD)-$(FLAG)])
-	@$(MAKE) -j $(OBJ)
+	@$(MAKE) -j $(OBJECTS)
 ifeq ($(LIB_DETECT).a,$(NAME))
-	@ar rc $(NAME) $(OBJ)
-	@ranlib $(NAME)
+	@ar rc $@ $(OBJECTS)
+	@ranlib $@
 else
-	@$(PROJ_CC) $(OBJ) $(COMPILE_APP_RULE) -o $(NAME)
+	@$(PROJ_CC) $(OBJECTS) $(COMPILE_APP_RULE) -o $@
 endif
 ifeq ($(LIB_DETECT),$(error))
 ifeq (DEBUG,$(findstring DEBUG,$(strip $(FLAG))))
-	@$(DB) $(NAME)
+	@$(DB) $@
 endif
 ifeq (PROFILE,$(findstring PROFILE,$(strip $(FLAG))))
 	@./$(NAME) > $(P_OUT) $(P_OUT_FLAGS)
-	@$(PROF) $(PROF_FLAGS) $(NAME)
+	@$(PROF) $(PROF_FLAGS) $@
 endif
 endif
 
+.PHONY: clean
 clean:
 	@$(info [REMOVING] $(OBJECTS_DIR))
-	@rm -rf $(OBJECTS_DIR)
+	@$(RMDIR) $(OBJECTS_DIR)
 
+.PHONY: fclean
 fclean: clean
 	@$(info [REMOVING] $(NAME))
-	@rm -rf $(NAME)
+	@$(RMFILE) $(NAME)
 
+.PHONY: re
 re:
 	@$(info [REWORKING])
 	@$(MAKE) fclean --no-print-directory
 	@$(MAKE) all --no-print-directory
 
+.PHONY: re_libs
 re_libs:
 	@$(RE_LIBS)
 
+.PHONY: fclean_libs
 fclean_libs:
 	@$(FCLEAN_LIBS)
 
+.PHONY: re_all
 re_all:
 	@$(MAKE) -j re_libs --no-print-directory
 	@$(MAKE) re --no-print-directory
 
+.PHONY: fclean_all
 fclean_all:
 	@$(MAKE) -j fclean_libs --no-print-directory
 	@$(MAKE) fclean

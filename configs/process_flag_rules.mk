@@ -22,10 +22,10 @@ ifeq (DEBUG,$(findstring DEBUG,$(strip $(FLAG))))
 endif
 ifeq (PROFILE,$(findstring PROFILE,$(strip $(FLAG))))
 	include	$(CURDIR)/configs/$(OS_DETECT)/$(PROJ_CC)/profile.mk
-	ifeq ($(OS_DETECT),win32)
+	ifeq ($(OS_DETECT),$(OS_WINDOWS))
 		P_OUT		:=	nul
 		P_OUT_FLAGS	:=
-	else ifeq ($(OS_DETECT),linux)
+	else ifeq ($(OS_DETECT),$(OS_LINUX))
 		PROF		:=	gprof
 		PROF_FLAGS	:=	-b -a
 		ifneq ($(P_FUNCTION),)
