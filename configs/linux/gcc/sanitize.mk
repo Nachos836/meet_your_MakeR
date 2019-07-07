@@ -36,17 +36,9 @@ pointer-overflow,
 builtin
 endef
 
-# PROJ_CFLAGS	+=	-g3 \
-# 			-fno-omit-frame-pointer \
-# 			-fno-merge-debug-strings \
-# 			-fsanitize="$(subst $(newline),,${sanitize_flags})" \
-# 			-fsanitize-address-use-after-scope \
-# 			-fsanitize-undefined-trap-on-error \
-# 			-fsanitize-coverage="trace-cmp" \
-
 PROJ_CFLAGS	+=	-g3 \
-			-fno-omit-frame-pointer \
-			-fno-merge-debug-strings
+				-fno-omit-frame-pointer \
+				-fno-merge-debug-strings
 
 ifeq ($(ASAN),)
 	PROJ_CFLAGS	+=	-fsanitize="$(subst $(newline),,${sanitize_flags})"

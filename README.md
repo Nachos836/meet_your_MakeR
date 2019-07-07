@@ -5,7 +5,7 @@ Thus Makefile contains special mk-configs and lots of stuff
 ___
 ## DEFAULTS:
 * Compile using gcc;
-* CFLAGS is -Wall -Wextra -Werror
+* CFLAGS is -Wall -Wextra -Werror (called PROJ_CFLAGS)
 * Traversing through working directory and building all libraries which has been placed within "libraries" dir
 * Adds "includes" dir and corresponding includes from the libraries to default compiler inc-searching directories
 * Outgoing project title is named after current directory.
@@ -44,9 +44,9 @@ to sources list. You should use one of this values as toggler. Combining both of
 ___
 * `make`
   * simple make current target
-* `make CC=clang re`
+* `make PROJ_CC=clang re`
   * rebuild current target with clang compiler
-* `make ASAN=LEAKS CC=gcc FLAG=WARNINGS,SANITIZE re`
+* `make ASAN=LEAKS PROJ_CC=gcc FLAG=WARNINGS,SANITIZE re`
   * rebuild current target with gcc compiler, add all warnings flags and sanitizer flags with memory leaks detection
 * `make BUILD=DEBUG FLAG=DEBUG re`
   * rebuild current target with "debug" sources added and then start lldb instance for current target
