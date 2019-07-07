@@ -1,4 +1,3 @@
-include $(CURDIR)/configs/detect_os.mk
 
 ifeq ($(OS_DETECT),$(OS_LINUX))
 	MKDIR		:= mkdir -p
@@ -22,6 +21,7 @@ PROJ_CFLAGS	:=
 PROJ_CC		:=	gcc
 
 OS_DETECT	?=	$(error)
+LIB_DETECT	?=	$(error)
 NAME		?=	$(notdir $(CURDIR))
 BUILD		?=	VANILLA
 OBJECTS_DIR	:=	$(CURDIR)/objects

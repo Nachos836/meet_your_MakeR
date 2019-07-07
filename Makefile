@@ -1,6 +1,7 @@
 include $(CURDIR)/configs/common_variables.mk
-
 include $(CURDIR)/configs/functions.mk
+
+include $(CURDIR)/configs/detect_os.mk
 include $(CURDIR)/configs/preparation.mk
 include $(CURDIR)/configs/libraries_processing.mk
 
