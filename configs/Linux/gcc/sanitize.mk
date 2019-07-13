@@ -8,7 +8,7 @@ ASAN	?=
 define address_sanitize_flags=
 address,
 pointer-compare,
-pointer-subtract,
+pointer-subtract
 endef
 
 define sanitize_flags=
