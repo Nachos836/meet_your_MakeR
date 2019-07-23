@@ -20,7 +20,7 @@ ifneq ($(LIBS_NAMES),$(error))
 endif
 	@$(MAKE) $(NAME) --no-print-directory
 
-.PRECIOUS: $(OBJECTS_DIR)/ $(OBJECTS_DIR)%/
+.PRECIOUS: $(OBJECTS_DIR)/. $(OBJECTS_DIR)%/.
 
 $(OBJECTS_DIR)/:
 	@$(MKDIR) $@
@@ -30,7 +30,7 @@ $(OBJECTS_DIR)%/:
 
 .SECONDEXPANSION:
 
-$(OBJECTS_DIR)/%.o: $(SOURCES_DIR)/%.c | $$(@D)/
+$(OBJECTS_DIR)/%.o: $(SOURCES_DIR)/%.c | $$(@D)/.
 	@$(info [COMPILING] $(notdir $<))
 	@$(PROJ_CC) $(COMPILE_OBJ_RULE) -c $< -o $@
 
