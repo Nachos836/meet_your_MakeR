@@ -44,5 +44,5 @@ else ifeq ($(ASAN),MEMORY)
 				-fsanitize-memory-track-origins \
 				-fsanitize-memory-use-after-dtor
 else ifeq ($(ASAN),THREAD)
-	PROJ_CFLAGS	+=	-fsanitize="thread" -fPIE -pie
+	PROJ_CFLAGS	+=	-fsanitize="thread" -fPIE
 endif
