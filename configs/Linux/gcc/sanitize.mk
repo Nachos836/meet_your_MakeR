@@ -42,6 +42,8 @@ PROJ_CFLAGS	+=	-g3 \
 
 ifeq ($(ASAN),)
 	PROJ_CFLAGS	+=	-fsanitize="$(subst $(newline),,${sanitize_flags})"
-else ifeq ($(ASAN),LEAKS)
+else ifeq ($(ASAN),ADDRESS)
 	PROJ_CFLAGS	+=	-fsanitize="$(subst $(newline),,${address_sanitize_flags})"
+else ifeq ($(ASAN),THREAD)
+	PROJ_CFLAGS	+=	-fsanitize="thread" -fPIE -pie
 endif

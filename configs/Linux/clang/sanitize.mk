@@ -27,11 +27,22 @@ pointer-overflow,
 builtin
 endef
 
-PROJ_CFLAGS	+=	-g3 \
-				-fno-omit-frame-pointer
+# MSAN_OPTIONS=poison_in_dtor=1 - extreme memory uninitialized values detection flag
+# Add before execution of the compiled app
+
+PROJ_CFLAGS	+=	-g3 -Og \
+				-fno-omit-frame-pointer \
+				-fno-optimize-sibling-calls
+				
 
 ifeq ($(ASAN),)
 	PROJ_CFLAGS	+=	-fsanitize="$(subst $(newline),,${sanitize_flags_CLANG})"
-else ifeq ($(ASAN),LEAKS)
-	PROJ_CFLAGS	+=	-fsanitize="memory"
+else ifeq ($(ASAN),ADDRESS)
+	PROJ_CFLAGS	+=	-fsanitize="address"
+else ifeq ($(ASAN),MEMORY)
+	PROJ_CFLAGS	+=	-fsanitize="memory" \
+				-fsanitize-memory-track-origins \
+				-fsanitize-memory-use-after-dtor
+else ifeq ($(ASAN),THREAD)
+	PROJ_CFLAGS	+=	-fsanitize="thread" -fPIE -pie
 endif
