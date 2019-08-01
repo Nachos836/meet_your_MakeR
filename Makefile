@@ -22,10 +22,10 @@ endif
 
 .PRECIOUS: $(OBJECTS_DIR)/. $(OBJECTS_DIR)%/.
 
-$(OBJECTS_DIR)/:
+$(OBJECTS_DIR)/.:
 	@$(MKDIR) $@
 
-$(OBJECTS_DIR)%/:
+$(OBJECTS_DIR)%/.:
 	@$(MKDIR) $@
 
 .SECONDEXPANSION:
