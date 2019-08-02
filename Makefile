@@ -11,10 +11,7 @@ include $(CURDIR)/configs/create_compile_rules.mk
 include $(CURDIR)/configs/MODIFIERS.mk
 
 .PHONY: all
-all:
-ifdef CLEAR
-	@$(CLEAR)
-endif
+all: $(CLEAR)
 ifneq ($(LIBS_NAMES),$(error))
 	@$(MAKE_LIBS)
 endif
@@ -34,15 +31,25 @@ $(OBJECTS_DIR)/%.o: $(SOURCES_DIR)/%.c | $$(@D)/.
 	@$(info [COMPILING] $(notdir $<))
 	@$(PROJ_CC) $(COMPILE_OBJ_RULE) -c $< -o $@
 
+ifdef CLEAR
+$(CLEAR):
+	@$(CLEAR)
+endif
+
+status:
+	@$(info [STATUS])
+	@$(info $(tab)created:$(NAME))
+	@$(info $(tab)compiler:$(PROJ_CC))
+	@$(info $(tab)flags:$(FLAG))
+
 # $(OBJECTS_DIR)%.o:$(SOURCES_VERSION_DIR)%.c
 # 	@$(info [COMPILING] $(notdir $<))
 # 	@$(PROJ_CC) $(COMPILE_OBJ_RULE) -o $@ -c $<
 
-
-
 $(NAME):
 	@$(info [CREATING]	$@	[$(BUILD)-$(FLAG)])
-	@$(MAKE) -j $(OBJECTS)
+	@$(MAKE) -j $(OBJECTS) --no-print-directory
+	@$(MAKE) status --no-print-directory
 ifeq ($(LIB_DETECT).a,$(NAME))
 	@ar rc $@ $(OBJECTS)
 	@ranlib $@
@@ -71,6 +78,9 @@ fclean: clean
 
 .PHONY: re
 re:
+ifdef CLEAR
+	@$(CLEAR)
+endif
 	@$(info [REWORKING])
 	@$(MAKE) fclean --no-print-directory
 	@$(MAKE) all --no-print-directory

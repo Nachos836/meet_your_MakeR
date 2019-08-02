@@ -5,9 +5,13 @@
 
 OS_DETECT	?=
 
-OS_LINUX	:= Linux
-OS_OSX		:= Darwin
-OS_WINDOWS	:= Windows
+OS_LINUX	:=	Linux
+OS_OSX		:=	Darwin
+OS_WINDOWS	:=	Windows
+
+OS_LIST		:=	$(OS_LINUX) \
+				$(OS_OSX) \
+				$(OS_WINDOWS)
 
 ifeq ($(OS),Windows_NT)
 	OS_DETECT	:= $(OS_WINDOWS)
@@ -24,3 +28,5 @@ else ifeq ($(OS_DETECT),$(OS_WINDOWS))
 else
 	OS_DETECT	:=	$(error)
 endif
+
+OS_NOT_CURRENT	:=	$(filter-out $(OS_DETECT),$(OS_LIST))

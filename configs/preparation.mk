@@ -28,8 +28,9 @@ OBJECTS_DIR	:=	$(CURDIR)/objects
 
 INCLUDES_DIR	?=	$(dir $(wildcard $(CURDIR)/includes/))
 ifeq ($(INCLUDES_DIR),)
-	INCLUDES_DIR	:= $(CURDIR)
+	INCLUDES_DIR	:= $(CURDIR)/
 endif
+INCLUDES_DIR	:= $(patsubst %/,%,$(INCLUDES_DIR))
 
 ifneq (,$(findstring lib,$(NAME)))
 	LIB_DETECT	:=	$(NAME)
@@ -38,16 +39,13 @@ endif
 
 SOURCES_DIR	?=	$(dir $(wildcard $(CURDIR)/sources/))
 ifeq ($(SOURCES_DIR),)
-	SOURCES_DIR	:= $(CURDIR)
+	SOURCES_DIR	:= $(CURDIR)/
 endif
+SOURCES_DIR	:= $(patsubst %/,%,$(SOURCES_DIR))
 
-INCLUDES	:= $(call unique_str,$(dir $(call rwildcard,$(INCLUDES_DIR),*.h)))
-SOURCES		:= $(call rwildcard,$(SOURCES_DIR),*.c)
-OBJECTS		:= $(patsubst $(SOURCES_DIR)%.c,$(OBJECTS_DIR)//%.o,$(SOURCES))
-
-# $(info INCLUDES: $(INCLUDES))
-# $(info SOURCES: $(SOURCES))
-# $(info OBJECTS: $(OBJECTS))
+INCLUDES	:= $(strip $(call unique_str,$(dir $(call rwildcard,$(INCLUDES_DIR),*.h))))
+SOURCES		:= $(strip $(call rwildcard,$(SOURCES_DIR)/,*.c))
+OBJECTS		:= $(strip $(patsubst $(SOURCES_DIR)/%.c,$(OBJECTS_DIR)/%.o,$(SOURCES)))
 
 # ifeq ($(BUILD),VANILLA)
 # 	SOURCES_VERSION_DIR	?=

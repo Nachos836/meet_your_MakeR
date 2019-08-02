@@ -17,4 +17,5 @@
 # Konsole clear routine - clear && echo -en "\e[3J"
 # Otherwise try "reset" or use whatever u want
 #
+
 CLEAR = clear && echo -en "\e[3J"

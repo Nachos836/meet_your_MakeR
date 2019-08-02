@@ -6,6 +6,8 @@ comma	?=	,
 empty	?=
 space	?=	$(empty) $(empty)
 tab		?=	$(empty)	$(empty)
+enter	?=	$(space) \
+$(space)
 error	?=	ERROR
 
 define newline

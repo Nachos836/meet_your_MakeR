@@ -6,8 +6,9 @@ LIBRARIES_DIR	?=	$(dir $(wildcard $(CURDIR)/libraries/))
 ifeq ($(LIBRARIES_DIR),)
 	LIBRARIES_DIR	:= $(error)
 endif
+LIBRARIES_DIR	:= $(patsubst %/,%,$(LIBRARIES_DIR))
 
-LIBS_LIST		?=	$(wildcard $(LIBRARIES_DIR)lib*/Makefile)
+LIBS_LIST		?=	$(wildcard $(LIBRARIES_DIR)/lib*/Makefile)
 ifeq ($(LIBS_LIST),)
 	LIBS_LIST	:= $(error)
 endif
