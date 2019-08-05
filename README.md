@@ -14,6 +14,7 @@ ___
 * Rules processing and preparetions are recursively processed by subcalls of Make
 
 ## BUILDS: (set BUILD variable)
+> Temporarily unavailable
 * You can add specific sources to directories "Release"/"Debug"
 * When make detects BUILD variable value as "RELEASE" or "DEBUG" - it automaticly add sources from corresponding directory
 to sources list. You should use one of this values as toggler. Combining both of them together is unexpected condition
@@ -30,9 +31,11 @@ to sources list. You should use one of this values as toggler. Combining both of
   * Warns even in std headers
   * Better way to combine thus flag with "#pragmas"
 * **SANITIZE** - turns on an code sanitizer at all avaliable levels
-  * Have extra flag "ASAN" (LEAKS|just blank)
-  * Produses address sanitizer (gcc)
-  * Produses memory sanitizer (clang)
+  * Have extra flag "ASAN" (ADDRESS|MEMORY|THREAD|just blank)
+  * ADDRESS - Produses address sanitize (for gcc & clang)
+  * MEMORY - Produses memory sanitize (clang only)
+  * THREAD - Produses thread sanitize (for gcc & clang)
+  * (leave blank) - Produces undefined behaviour sanitize (for gcc & clang)
 > MacOS support is very poor becouse of clang-build restrictions
 
 ## MODIFIERS: (MODIFIERS.mk file in "configs" directory)
@@ -46,7 +49,10 @@ ___
   * simple make current target
 * `make PROJ_CC=clang re`
   * rebuild current target with clang compiler
-* `make ASAN=LEAKS PROJ_CC=gcc FLAG=WARNINGS,SANITIZE re`
+* `make ASAN=ADDRESS PROJ_CC=gcc FLAG=WARNINGS,SANITIZE re`
   * rebuild current target with gcc compiler, add all warnings flags and sanitizer flags with memory leaks detection
 * `make BUILD=DEBUG FLAG=DEBUG re`
+> Temporarily unavailable
   * rebuild current target with "debug" sources added and then start lldb instance for current target
+* `make FLAG=SANITIZE re_libs`
+  * rebuild all libs in current project with undefined behaviour sanitize and then start lldb instance for current target
