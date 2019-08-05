@@ -45,7 +45,24 @@ SOURCES_DIR	:= $(patsubst %/,%,$(SOURCES_DIR))
 
 INCLUDES	:= $(strip $(call unique_str,$(dir $(call rwildcard,$(INCLUDES_DIR),*.h))))
 SOURCES		:= $(strip $(call rwildcard,$(SOURCES_DIR)/,*.c))
-OBJECTS		:= $(strip $(patsubst $(SOURCES_DIR)/%.c,$(OBJECTS_DIR)/%.o,$(SOURCES)))
+
+ifneq ($(OS_DETECT),$(error))
+ifeq ($(OS_DETECT),$(OS_LINUX))
+SOURCES	:=	$(filter-out $(SOURCES_DIR)/$(OS_WINDOWS)/%,$(SOURCES))
+SOURCES	:=	$(filter-out $(SOURCES_DIR)/$(OS_OSX)/%,$(SOURCES))
+OBJECTS	:= $(strip $(patsubst $(SOURCES_DIR)/%.c,$(OBJECTS_DIR)/%.o,$(SOURCES)))
+endif
+ifeq ($(OS_DETECT),$(OS_OSX))
+SOURCES	:=	$(filter-out $(SOURCES_DIR)/$(OS_WINDOWS)/%,$(SOURCES))
+SOURCES	:=	$(filter-out $(SOURCES_DIR)/$(OS_LINUX)/%,$(SOURCES))
+OBJECTS	:= $(strip $(patsubst $(SOURCES_DIR)/%.c,$(OBJECTS_DIR)/%.o,$(SOURCES)))
+endif
+ifeq ($(OS_DETECT),$(OS_WINDOWS))
+SOURCES	:=	$(filter-out $(SOURCES_DIR)/$(OS_OSX)/%,$(SOURCES))
+SOURCES	:=	$(filter-out $(SOURCES_DIR)/$(OS_LINUX)/%,$(SOURCES))
+OBJECTS	:= $(strip $(patsubst $(SOURCES_DIR)/%.c,$(OBJECTS_DIR)/%.o,$(SOURCES)))
+endif
+endif
 
 # ifeq ($(BUILD),VANILLA)
 # 	SOURCES_VERSION_DIR	?=

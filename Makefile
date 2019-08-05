@@ -28,7 +28,7 @@ $(OBJECTS_DIR)%/.:
 .SECONDEXPANSION:
 
 $(OBJECTS_DIR)/%.o: $(SOURCES_DIR)/%.c | $$(@D)/.
-	@$(info [COMPILING] $(notdir $<))
+	@$(info [COMPILING]$(tab)$(subst $(SOURCES_DIR),,$<))
 	@$(PROJ_CC) $(COMPILE_OBJ_RULE) -c $< -o $@
 
 ifdef CLEAR
@@ -36,20 +36,16 @@ $(CLEAR):
 	@$(CLEAR)
 endif
 
-status:
-	@$(info [STATUS])
+STATUS:
+	@$(info [$@])
 	@$(info $(tab)created:$(NAME))
 	@$(info $(tab)compiler:$(PROJ_CC))
 	@$(info $(tab)flags:$(FLAG))
 
-# $(OBJECTS_DIR)%.o:$(SOURCES_VERSION_DIR)%.c
-# 	@$(info [COMPILING] $(notdir $<))
-# 	@$(PROJ_CC) $(COMPILE_OBJ_RULE) -o $@ -c $<
-
 $(NAME):
 	@$(info [CREATING]	$@	[$(BUILD)-$(FLAG)])
 	@$(MAKE) -j $(OBJECTS) --no-print-directory
-	@$(MAKE) status --no-print-directory
+	@$(MAKE) -q STATUS --no-print-directory
 ifeq ($(LIB_DETECT).a,$(NAME))
 	@ar rc $@ $(OBJECTS)
 	@ranlib $@
