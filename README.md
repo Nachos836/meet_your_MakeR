@@ -55,4 +55,4 @@ ___
 > Temporarily unavailable
   * rebuild current target with "debug" sources added and then start lldb instance for current target
 * `make FLAG=SANITIZE re_libs`
-  * rebuild all libs in current project with undefined behaviour sanitize and then start lldb instance for current target
+  * rebuild all libs in current project with undefined behaviour sanitizer
